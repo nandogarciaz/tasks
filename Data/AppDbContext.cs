@@ -16,5 +16,9 @@ public class AppDbContext : DbContext
             .HasMany(u => u.Tasks)
             .WithOne(t => t.User)
             .HasForeignKey(t => t.UserId);
+
+        modelBuilder.Entity<TaskItem>()
+            .Property(t => t.Status)
+            .HasConversion<int>(); // Armazena como inteiro no banco
     }
 }
