@@ -24,7 +24,7 @@ public class TaskService : ITaskService
                 Description = t.Description,
                 Deadline = t.Deadline,
                 Created = t.Created,
-                IsCompleted = t.IsCompleted,
+                Status = t.Status,
                 UserId = t.UserId,
                 User = new UserDto {
                     Id = t.UserId,
@@ -48,7 +48,7 @@ public class TaskService : ITaskService
             Description = task.Description,
             Deadline = task.Deadline,
             Created = task.Created,
-            IsCompleted = task.IsCompleted,
+            Status = task.Status,
             UserId = task.UserId,
             User = new UserDto {
                 Id = task.UserId,
@@ -64,7 +64,7 @@ public class TaskService : ITaskService
             Description = tasksDto.Description,
             Deadline = tasksDto.Deadline,
             Created = DateTime.UtcNow,
-            IsCompleted = tasksDto.IsCompleted,
+            Status = tasksDto.Status,
             UserId = tasksDto.UserId,
         };
 
@@ -77,7 +77,7 @@ public class TaskService : ITaskService
             Description = task.Description,
             Deadline = task.Deadline,
             Created = task.Created,
-            IsCompleted = tasksDto.IsCompleted,
+            Status = tasksDto.Status,
             UserId = task.UserId
         };
     }
@@ -90,7 +90,7 @@ public class TaskService : ITaskService
         task.Description = tasksDto.Description;
         task.Deadline = tasksDto.Deadline;
         task.UserId = tasksDto.UserId;
-        task.IsCompleted = tasksDto.IsCompleted;
+        task.Status = tasksDto.Status;
 
         await _context.SaveChangesAsync();
         return true;
