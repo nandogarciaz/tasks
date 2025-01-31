@@ -7,6 +7,7 @@ public class TaskItem: BaseEntity
     public string Description { get; set; } = string.Empty;
     public DateTime Deadline { get; set;}
     public DateTime Created { get; set;} = DateTime.UtcNow;
+    public bool IsCompleted { get; set; } = false;
 
     [ForeignKey("User")]
     public int UserId { get; set; }

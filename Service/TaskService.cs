@@ -17,20 +17,29 @@ public class TaskService : ITaskService
     public async Task<IEnumerable<TasksDto>> GetTasksAsync()
     {
         return await _context.Tasks
+            .Include(o => o.User)
             .Select(t => new TasksDto
             {
                 Id = t.Id,
                 Description = t.Description,
                 Deadline = t.Deadline,
                 Created = t.Created,
-                UserId = t.UserId
+                IsCompleted = t.IsCompleted,
+                UserId = t.UserId,
+                User = new UserDto {
+                    Id = t.UserId,
+                    Name = t.User.Name
+                }
             })
             .ToListAsync();
     }
 
     public async Task<TasksDto?> GetTaskByIdAsync(int id)
     {
-        var task = await _context.Tasks.FindAsync(id);
+        var task = await _context.Tasks
+            .Include(o => o.User)
+            .FirstAsync(x => x.Id == id);
+            
         if (task == null) return null;
 
         return new TasksDto
@@ -39,18 +48,24 @@ public class TaskService : ITaskService
             Description = task.Description,
             Deadline = task.Deadline,
             Created = task.Created,
-            UserId = task.UserId
+            IsCompleted = task.IsCompleted,
+            UserId = task.UserId,
+            User = new UserDto {
+                Id = task.UserId,
+                Name = task.User.Name
+            }
         };
     }
 
-    public async Task<TasksDto> CreateTaskAsync(TasksDto TasksDto)
+    public async Task<TasksDto> CreateTaskAsync(TasksDto tasksDto)
     {
         var task = new TaskItem
         {
-            Description = TasksDto.Description,
-            Deadline = TasksDto.Deadline,
+            Description = tasksDto.Description,
+            Deadline = tasksDto.Deadline,
             Created = DateTime.UtcNow,
-            UserId = TasksDto.UserId
+            IsCompleted = tasksDto.IsCompleted,
+            UserId = tasksDto.UserId,
         };
 
         _context.Tasks.Add(task);
@@ -62,18 +77,20 @@ public class TaskService : ITaskService
             Description = task.Description,
             Deadline = task.Deadline,
             Created = task.Created,
+            IsCompleted = tasksDto.IsCompleted,
             UserId = task.UserId
         };
     }
 
-    public async Task<bool> UpdateTaskAsync(int id, TasksDto TasksDto)
+    public async Task<bool> UpdateTaskAsync(int id, TasksDto tasksDto)
     {
         var task = await _context.Tasks.FindAsync(id);
         if (task == null) return false;
 
-        task.Description = TasksDto.Description;
-        task.Deadline = TasksDto.Deadline;
-        task.UserId = TasksDto.UserId;
+        task.Description = tasksDto.Description;
+        task.Deadline = tasksDto.Deadline;
+        task.UserId = tasksDto.UserId;
+        task.IsCompleted = tasksDto.IsCompleted;
 
         await _context.SaveChangesAsync();
         return true;

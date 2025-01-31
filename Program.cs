@@ -48,9 +48,9 @@ void SeedData(AppDbContext context)
         var user1 = new User { Name = "Fernanda" };
         var user2 = new User { Name = "Anderson" };
 
-        user1.Tasks.Add(new TaskItem { Title = "Tarefa 1", Description = "teste tarefa fernanda", Deadline = DateTime.Now.AddDays(1), Created = DateTime.Now, UserId = 1 });
-        user1.Tasks.Add(new TaskItem { Title = "Tarefa 2", Description = "teste tarefa fernanda 2", Deadline = DateTime.Now.AddDays(1), Created = DateTime.Now, UserId = 1 });
-        user2.Tasks.Add(new TaskItem { Title = "Tarefa 3", Description = "teste tarefa Anderson", Deadline = DateTime.Now.AddDays(3), Created = DateTime.Now, UserId = 2 });
+        user1.Tasks.Add(new TaskItem { Title = "Tarefa 1", Description = "teste tarefa fernanda", Deadline = DateTime.Now.AddDays(1), Created = DateTime.Now, UserId = 1, IsCompleted = false });
+        user1.Tasks.Add(new TaskItem { Title = "Tarefa 2", Description = "teste tarefa fernanda 2", Deadline = DateTime.Now.AddDays(1), Created = DateTime.Now, UserId = 1, IsCompleted = false });
+        user2.Tasks.Add(new TaskItem { Title = "Tarefa 3", Description = "teste tarefa Anderson", Deadline = DateTime.Now.AddDays(3), Created = DateTime.Now, UserId = 2, IsCompleted = false });
 
         context.Users.AddRange(user1, user2);
         context.SaveChanges();

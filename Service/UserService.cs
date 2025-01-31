@@ -17,6 +17,7 @@ public class UserService : IUserService
     public async Task<IEnumerable<UserDto>> GetUsersAsync()
     {
         return await _context.Users
+            .Include(o => o.Tasks)
             .Select(u => new UserDto
             {
                 Id = u.Id,
@@ -27,10 +28,15 @@ public class UserService : IUserService
 
     public async Task<UserDto?> GetUserByIdAsync(int id)
     {
-        var user = await _context.Users.FindAsync(id);
+        var user = await _context.Users
+            .Include(o => o.Tasks)
+            .FirstAsync(x => x.Id == id);
         if (user == null) return null;
 
-        return new UserDto { Id = user.Id, Name = user.Name };
+        return new UserDto { 
+            Id = user.Id, 
+            Name = user.Name
+        };
     }
 
     public async Task<UserDto> CreateUserAsync(UserDto userDto)
