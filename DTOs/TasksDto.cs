@@ -11,7 +11,8 @@ public class TasksDto: BaseEntity
     public DateTime Deadline { get; set;}= DateTime.UtcNow.AddDays(1);
     public DateTime Created { get; set;} = DateTime.UtcNow;
 
-    [JsonConverter(typeof(JsonStringEnumConverter))] // Retorna o status como string automaticamente
+    // Retorna o status como string automaticamente
+    [JsonConverter(typeof(JsonStringEnumConverter))] 
     public EStatus Status { get; set; } = EStatus.Pendente;
     public int UserId { get; set; }
 
